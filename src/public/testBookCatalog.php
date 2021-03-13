@@ -88,8 +88,8 @@ $catalog->addBook($book6);
 $catalog->addBook($book7);
 $catalog->addBook($book8);
 
-$mystAuthBooks = $catalog->getMostBooksSoldByAuthor('Mystery Author 2', 5);
-$catalog->PrintLine('getMostBooksSoldByAuthor');
+$mystAuthBooks = $catalog->getMostBooksSoldByAuthor('Mystery Author 2', 2);
+$catalog->PrintLine('getMostBooksSoldByAuthor - Mystery Author 2');
 error_log(print_r($mystAuthBooks, true));
 
 $ficCatBooks = $catalog->getMostBooksSoldByCategory(Book::FICTION, 2);
@@ -97,7 +97,11 @@ $catalog->PrintLine('ficCatBooks');
 error_log(print_r($ficCatBooks, true));
 
 $allMystAuthBooks = $catalog->searchByAuthor('Mystery Author 2');
-$catalog->PrintLine('allMystAuthBooks');
+$catalog->PrintLine('allMystAuthBooks - Mystery Author 2');
 error_log(print_r($allMystAuthBooks, true));
 
 // error_log(print_r($catalog->GetMapAuthorBooks(), true));
+
+$searchByNameBooks = $catalog->searchByName('SCI_FI');
+$catalog->PrintLine('searchByName - SCI_FI');
+error_log(print_r($searchByNameBooks, true));

@@ -61,7 +61,7 @@ class Catalog {
     public function searchByName(String $prefix): array {
         $ret = [];
         foreach($this->books as $book) {
-            $bookPrefix = substr($book->GetName(), 0, count($name));
+            $bookPrefix = substr($book->GetName(), 0, strlen($prefix));
 
             if ($bookPrefix == $prefix) {
                 $ret[] = $book;
@@ -85,13 +85,15 @@ class Catalog {
         String $author,
         Int $limit,
     ): array {
+        $tmpLimit = $limit; //to put back same no. of books in heap
         $ret = [];
         $authorBooksMaxHeap = $this->mapAuthorBooks[$author];
         foreach($authorBooksMaxHeap as $bookData) {
+            if ($tmpLimit==0) break;
+
             $ret[] = $bookData[2];
 
-            $limit -= 1;
-            if ($limit==0) break;
+            $tmpLimit -= 1;
         }
 
         // the above foreach pops from heap
@@ -101,6 +103,9 @@ class Catalog {
             $this->mapAuthorBooks[ $author ]->insert(
                 [$book->GetCopiesSold(), $book->GetID(), $book]
             );
+
+            $tmpLimit += 1;
+            if ($tmpLimit==$limit) break;
         }
 
         return $ret;
@@ -111,13 +116,15 @@ class Catalog {
         Int $category,
         Int $limit,
     ): array {
+        $tmpLimit = $limit; //to put back same no. of books in heap
         $ret = [];
         $categoryBooksMaxHeap = $this->mapCategoryBooks[$category];
         foreach($categoryBooksMaxHeap as $bookData) {
+            if ($tmpLimit==0) break;
+
             $ret[] = $bookData[2];
 
-            $limit -= 1;
-            if ($limit==0) break;
+            $tmpLimit -= 1;
         }
 
         // the above foreach pops from heap
@@ -127,6 +134,9 @@ class Catalog {
             $this->mapCategoryBooks[ $category ]->insert(
                 [$book->GetCopiesSold(), $book->GetID(), $book]
             );
+
+            $tmpLimit += 1;
+            if ($tmpLimit==$limit) break;
         }
 
         return $ret;
